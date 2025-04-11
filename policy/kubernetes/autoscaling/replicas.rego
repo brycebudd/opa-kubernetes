@@ -1,4 +1,4 @@
-package autoscaling.minreplicas
+package autoscaling.replicas
 
 import rego.v1
 import data.lib.kubernetes

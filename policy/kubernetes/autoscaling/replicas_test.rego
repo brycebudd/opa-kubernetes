@@ -1,8 +1,8 @@
-package autoscaling.minreplicas_test
+package autoscaling.replicas_test
 
 import rego.v1
-import data.autoscaling.minreplicas.allow
-import data.autoscaling.minreplicas.violations
+import data.autoscaling.replicas.allow
+import data.autoscaling.replicas.violations
 
 test_should_allow_when_minreplicas_less_than_maxreplicas if {
     valid_replicas := {
