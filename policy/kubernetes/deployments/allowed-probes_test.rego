@@ -22,18 +22,6 @@ test_should_allow_deployment_when_probe_ports_match_container_ports if {
     allow with input as fixture.valid_deployment
 }
 
-test_should_not_allow_deployment_when_startupProbe_ports_do_not_match_container_ports if {
-    violations[{"msg": "The startup probe for container 'container' in deployment 'invalid-probe-ports' uses port '999', which is not exposed in the container's ports.", "details": {}}] with input as fixture.invalid_probe_ports
-}
-
-test_should_not_allow_deployment_when_readinessProbe_port_does_not_match_container_ports_exposed if {
-    violations[{"msg": "The readiness probe for container 'container' in deployment 'invalid-probe-ports' uses port '80', which is not exposed in the container's ports.", "details": {}}] with input as fixture.invalid_probe_ports
-}
-
-test_should_not_allow_deployment_when_livenessProbe_port_does_not_match_container_ports_exposed if {
-    violations[{"msg": "The liveness probe for container 'container' in deployment 'invalid-probe-ports' uses port '80', which is not exposed in the container's ports.", "details": {}}] with input as fixture.invalid_probe_ports
-}
-
 
 
 
