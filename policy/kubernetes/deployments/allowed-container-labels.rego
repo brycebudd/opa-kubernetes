@@ -38,3 +38,6 @@ violations contains {"msg": msg, "details": additionalDetails} if {
         "want": sprintf("a subset of %v", [templateLabels])
     }
 }
+
+# Avoid Overlapping Selectors: Ensure that the selectors of different controllers or services don't unintentionally 
+# overlap and target the same Pods if that's not the desired behavior.
