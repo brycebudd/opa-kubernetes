@@ -9,6 +9,11 @@ test_should_allow_deployment_with_valid_container_labels if {
     allow with input as fixture.valid_deployment
 }
 
+test_should_not_allow_deployment_with_invalid_metadata_template_labels if {
+    not allow with input as fixture.invalid_deployment
+    violations[{"msg": "Warning: The deployment 'app-deployment' has template metadata labels that are not a subset of metadata labels.", "details": {"got": {"app": "app", "tier": "frontending"}, "want": "a subset of {\"app\": \"app\", \"tier\": \"frontend\"}"}}] with input as fixture.invalid_deployment
+}
+
 test_should_not_allow_deployment_with_missing_template_labels if {
     not allow with input as fixture.missing_template_labels
     violations[{"msg": "The deployment missing_template_labels is missing template metadata labels.", "details": {}}] with input as fixture.missing_template_labels

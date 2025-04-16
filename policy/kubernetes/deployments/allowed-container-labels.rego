@@ -39,5 +39,19 @@ violations contains {"msg": msg, "details": additionalDetails} if {
     }
 }
 
+violations contains {"msg": msg, "details": additionalDetails} if {
+    kubernetes.is_deployment
+    kubernetes.has_labels
+    kubernetes.has_template_metadata_labels
+    labels := input.metadata.labels
+    templateLabels := input.spec.template.metadata.labels
+    not kubernetes.is_subset(templateLabels, labels)
+    msg := sprintf("Warning: The deployment '%s' has template metadata labels that are not a subset of metadata labels.", [name])
+    additionalDetails := {
+        "got": templateLabels, 
+        "want": sprintf("a subset of %v", [labels])
+    }
+}
+
 # Avoid Overlapping Selectors: Ensure that the selectors of different controllers or services don't unintentionally 
 # overlap and target the same Pods if that's not the desired behavior.
