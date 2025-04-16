@@ -11,8 +11,32 @@ allow if {
     count(violations) == 0
 }
 
-violations contains {"msg": msg, "details": additionalDetails} if {
-    msg := {}
-    additionalDetails := {}
-    false
+required_labels := {
+    "app.kubernetes.io/app", 
+    "app.kubernetes.io/instance", 
+    "app.kubernetes.io/version", 
+    "app.kubernetes.io/component", 
+    "app.kubernetes.io/part-of", 
+    "app.kubernetes.io/managed-by"
 }
+
+violations contains {"msg": msg, "details": additionalDetails} if {
+    kubernetes.is_label_workload
+    not kubernetes.has_labels
+    msg := sprintf("The %s '%s' is missing required labels '%v'.", [input.kind, name, required_labels])
+    additionalDetails := {}
+}
+
+violations contains {"msg": msg, "details": additionalDetails} if {
+    kubernetes.is_label_workload
+    kubernetes.has_labels
+    labels := object.keys(input.metadata.labels)
+    missing := required_labels - labels
+    missing != set()
+    msg := sprintf("The %s '%s' is missing required labels '%v'.", [input.kind, name, missing])
+    additionalDetails := {
+        "got": labels, 
+        "wanted": sprintf("%v", [required_labels])
+    }
+}
+
