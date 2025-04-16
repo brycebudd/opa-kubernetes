@@ -23,7 +23,18 @@ test_should_allow_deployment_with_required_labels if {
     allow with input as valid_deployment_labels
 }
 
-test_should_not_allow_with_empty_labels if {
+test_should_allow_when_kind_not_validated if {
+    kind_not_validated := {
+        "kind": "Route", 
+        "metadata": {
+            "name": "no-kind"
+        }
+    }
+
+    allow with input as kind_not_validated
+}
+
+test_should_not_allow_deployment_with_empty_labels if {
     empty_deployment_labels := {
         "kind": "Deployment", 
         "metadata": {
@@ -34,7 +45,7 @@ test_should_not_allow_with_empty_labels if {
     not allow with input as empty_deployment_labels
 }
 
-test_should_not_allow_with_missing_required_labels if {
+test_should_not_allow_deployment_with_missing_required_labels if {
     invalid_deployment_labels := {
         "kind": "Deployment", 
         "metadata": {

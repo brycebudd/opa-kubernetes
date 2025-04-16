@@ -165,6 +165,24 @@ split_image(image) := [image_name, tag] if {
     [image_name, tag] := split(image, ":")
 }
 
+template(entity) := template if {
+    template := entity.spec.template
+}
+
+template(entity) := template if {
+    template := entity.spec.jobTemplate.spec.template
+}
+
+to_millicores(cpu) := millicores if {
+    endswith(cpu, "m")
+    millicores := to_number(trim_suffix(cpu, "m"))
+}
+
+to_millicores(cpu) := millicores if {
+    not endswith(cpu, "m")
+    millicores := to_number(cpu) * 1000
+}
+
 volumes[volume] if {
     pods[pod]
     volume = pod.spec.volumes[_]
