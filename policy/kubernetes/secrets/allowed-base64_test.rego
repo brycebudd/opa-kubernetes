@@ -11,8 +11,8 @@ test_should_allow_with_base64_encoded_secret if {
             "name": "valid-secret"
         },
         "data": {
-            "key1": "c29tZSBkYXRh",
-            "key2": "YW5vdGhlciBkYXRh"
+            "key1": "dGhpcyBpcyBiYXNlNjQgZW5jb2RlZA==",
+            "key2": "dGhpcyBpcyB0aGUgdmFsdWUgb2Yga2V5IDI="
         }
     }
 
@@ -27,7 +27,7 @@ test_should_not_allow_with_invalid_base64_encoded_secret if {
         },
         "data": {
             "key1": "this is not base64",
-            "key2": "YW5vdGhlciBkYXRh"
+            "key2": "dGhpcyBpcyB0aGUgdmFsdWUgb2Yga2V5IDI="
         }
     }
 
@@ -37,5 +37,31 @@ test_should_not_allow_with_invalid_base64_encoded_secret if {
     }
 
     violations[expected_violation] with input as invalid_secret
+}
+
+test_should_not_allow_with_multiple_invalid_base64_encoded_secret if {
+    invalid_secret := {
+        "kind": "Secret", 
+        "metadata": {
+            "name": "invalid-secret"
+        },
+        "data": {
+            "key1": "this is not base64",
+            "key2": "dGhpcyBpcyB0aGUgdmFsdWUgb2Yga2V5IDI=",
+            "key3": "this is also not base64"
+        }
+    }
+
+    expected_violations := [{
+            "msg": "Secret 'invalid-secret' contains an invalid key 'key1' that must be base64 encoded",
+            "details": {}
+        },
+        {
+        "msg": "Secret 'invalid-secret' contains an invalid key 'key3' that must be base64 encoded",
+        "details": {}
+        }
+    ]
+    violations[expected_violations[0]] with input as invalid_secret
+    violations[expected_violations[1]] with input as invalid_secret
 }
 
