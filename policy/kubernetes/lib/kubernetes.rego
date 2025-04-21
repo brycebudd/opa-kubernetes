@@ -105,6 +105,10 @@ is_pod if {
     input.kind == "Pod"
 }
 
+is_secret if {
+    input.kind == "Secret"
+}
+
 is_service if {
     input.kind == "Service"
 }
