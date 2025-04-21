@@ -117,7 +117,12 @@ is_subset(subset, superset) if {
     count(object.keys(subset)) == count([k | k = object.keys(subset)[_]; superset[k] == subset[k]])
 }
 
-label_kinds := {"Deployment", "Job", "CronJob", "Service"}
+is_volume_workload if {
+    volume_kinds[input.kind]
+}
+
+volume_kinds := {"Deployment", "Pod", "DaemonSet", "Job", "CronJob"}
+label_kinds := {"Deployment", "Pod", "DaemonSet", "Job", "CronJob", "Service"}
 
 pod_containers(pod, container_type) = result if {
     container_type == "all"
@@ -188,6 +193,5 @@ to_millicores(cpu) := millicores if {
 }
 
 volumes[volume] if {
-    pods[pod]
-    volume = pod.spec.volumes[_]
+    volume = input.spec.volumes[_]
 }
