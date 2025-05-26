@@ -8,7 +8,7 @@ default allow := false
 name := kubernetes.get_default(input.metadata, "name", "default")
 
 allow if {
-    count(violations) == 0
+    count(violation) == 0
 }
 
 required_labels := {
@@ -20,14 +20,14 @@ required_labels := {
     "app.kubernetes.io/managed-by"
 }
 
-violations contains {"msg": msg, "details": additionalDetails} if {
+violation contains {"msg": msg, "details": additionalDetails} if {
     kubernetes.is_label_workload
     not kubernetes.has_labels
     msg := sprintf("The %s '%s' is missing required labels '%v'.", [input.kind, name, required_labels])
     additionalDetails := {}
 }
 
-violations contains {"msg": msg, "details": additionalDetails} if {
+violation contains {"msg": msg, "details": additionalDetails} if {
     kubernetes.is_label_workload
     kubernetes.has_labels
     labels := object.keys(input.metadata.labels)

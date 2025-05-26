@@ -8,13 +8,13 @@ default allow := false
 # All Kubernetes resources must have a name
 name := kubernetes.get_default(input.metadata, "name", "default")
 
-# Allow if there are no violations
+# Allow if there are no violation
 allow if {
-    count(violations) == 0
+    count(violation) == 0
 }
 
-# Generate violations for unused volumes
-violations contains {"msg": msg, "details": additionalDetails} if {
+# Generate violation for unused volumes
+violation contains {"msg": msg, "details": additionalDetails} if {
     kubernetes.is_volume_workload
     kubernetes.volumes[volume]
     not volume_is_mounted(volume)

@@ -8,10 +8,10 @@ default allow := false
 name := kubernetes.get_default(input.metadata, "name", "default")
 
 allow if {
-    count(violations) == 0
+    count(violation) == 0
 }
 
-violations contains {"msg": msg, "details": additionalDetails} if {
+violation contains {"msg": msg, "details": additionalDetails} if {
     kubernetes.is_volume_workload
     kubernetes.containers[container]
     some mount in container.volumeMounts

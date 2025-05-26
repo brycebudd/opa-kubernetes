@@ -8,17 +8,17 @@ default allow := false
 name := kubernetes.get_default(input.metadata, "name", "default")
 
 allow if {
-    count(violations) == 0
+    count(violation) == 0
 }
 
-violations contains {"msg": msg, "details": additionalDetails} if {
+violation contains {"msg": msg, "details": additionalDetails} if {
     kubernetes.is_job
     not has_backoff_limit
     msg := sprintf("The job %s must specify a backoff limit", [name])
     additionalDetails := {}
 }
 
-violations contains {"msg": msg, "details": additionalDetails} if {
+violation contains {"msg": msg, "details": additionalDetails} if {
     kubernetes.is_job
     has_backoff_limit
     input.spec.backoffLimit < 0

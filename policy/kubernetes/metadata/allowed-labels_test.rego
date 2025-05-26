@@ -2,7 +2,7 @@ package metadata.allowed_labels_test
 
 import rego.v1
 import data.metadata.allowed_labels.allow
-import data.metadata.allowed_labels.violations
+import data.metadata.allowed_labels.violation
 
 test_should_allow_deployment_with_required_labels if {
     valid_deployment_labels := {

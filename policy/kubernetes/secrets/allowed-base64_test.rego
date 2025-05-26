@@ -2,7 +2,7 @@ package secrets.allowed_base64_test
 
 import rego.v1
 import data.secrets.allowed_base64.allow
-import data.secrets.allowed_base64.violations
+import data.secrets.allowed_base64.violation
 
 test_should_allow_with_base64_encoded_secret if {
     valid_secret := {
@@ -36,7 +36,7 @@ test_should_not_allow_with_invalid_base64_encoded_secret if {
         "details": {}
     }
 
-    violations[expected_violation] with input as invalid_secret
+    violation[expected_violation] with input as invalid_secret
 }
 
 test_should_not_allow_with_multiple_invalid_base64_encoded_secret if {
@@ -61,7 +61,7 @@ test_should_not_allow_with_multiple_invalid_base64_encoded_secret if {
         "details": {}
         }
     ]
-    violations[expected_violations[0]] with input as invalid_secret
-    violations[expected_violations[1]] with input as invalid_secret
+    violation[expected_violations[0]] with input as invalid_secret
+    violation[expected_violations[1]] with input as invalid_secret
 }
 

@@ -1,4 +1,4 @@
-package autoscaling.allowed_cpu_utilization
+package autoscaling
 
 import rego.v1
 import data.lib.kubernetes
@@ -8,18 +8,18 @@ default allow := false
 name := kubernetes.get_default(input.metadata, "name", "default")
 
 allow if {
-    count(violations) == 0
+    count(violation) == 0
 }
 
-violations contains {"msg": msg, "details": additionalDetails} if {
+violation contains {"msg": msg, "details": additionalDetails} if {
     kubernetes.is_hpa
     kubernetes.has_field(input, "spec")
     kubernetes.has_field(input.spec, "metrics")
-    cpu_metrics := kubernetes.metrics.get_cpu_utilization_metrics
-    cpu_metrics[_].target.averageUtilization != 70
+    kubernetes.metrics.get_cpu_utilization_metrics[metric]
+    metric.target.averageUtilization != 70
     msg := sprintf("The HorizontalPodAutoscaler %s has an invalid cpu utilization", [name])
     additionalDetails := {
-        "got": cpu_metrics[_].target.averageUtilization, 
+        "got": metric.target.averageUtilization, 
         "want": 70
     }
 }

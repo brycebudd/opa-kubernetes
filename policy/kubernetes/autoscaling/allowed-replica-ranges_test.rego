@@ -1,8 +1,6 @@
-package autoscaling.allowed_replica_ranges_test
+package autoscaling
 
 import rego.v1
-import data.autoscaling.allowed_replica_ranges.allow
-import data.autoscaling.allowed_replica_ranges.violations
 
 test_should_allow_when_minreplicas_less_than_maxreplicas if {
     valid_replicas := {
@@ -38,7 +36,7 @@ test_should_not_allow_when_minreplicas_greater_than_maxreplicas if {
         "spec": {"minReplicas": 4, "maxReplicas": 3}
     }
     not allow with input as invalid_replicas
-    violations[{"details": {"got": 4, "wanted": "less than or equal to 3"}, "msg": "The HorizontalPodAutoscaler 'invalid-replicas' cannot have 'minReplicas' greater than 'maxReplicas'"}] with input as invalid_replicas
+    violation[{"details": {"got": 4, "wanted": "less than or equal to 3"}, "msg": "The HorizontalPodAutoscaler 'invalid-replicas' cannot have 'minReplicas' greater than 'maxReplicas'"}] with input as invalid_replicas
 }
 
 test_should_handle_missing_spec_or_replicas if {

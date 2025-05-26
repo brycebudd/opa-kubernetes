@@ -1,8 +1,6 @@
-package autoscaling.allowed_maxreplicas_test
+package autoscaling
 
 import rego.v1
-import data.autoscaling.allowed_maxreplicas.allow
-import data.autoscaling.allowed_maxreplicas.violations
 
 test_should_allow_when_maxreplicas_equal_eight if {
     valid_maxreplicas := {

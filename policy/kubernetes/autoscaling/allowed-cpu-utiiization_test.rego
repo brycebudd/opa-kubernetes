@@ -1,8 +1,6 @@
-package autoscaling.allowed_cpu_utilization_test
+package autoscaling
 
 import rego.v1
-import data.autoscaling.allowed_cpu_utilization.allow
-import data.autoscaling.allowed_cpu_utilization.violations
 
 test_should_allow_when_valid_cpu_utilization if {
     valid_cpu_utilization := {
@@ -32,7 +30,7 @@ test_should_not_allow_when_cpu_utilization_not_equal_seventy if {
     } 
 
     not allow with input as invalid_cpu_utilization
-    violations[{"details": {"got": 50, "want": 70}, "msg": "The HorizontalPodAutoscaler valid-less has an invalid cpu utilization"}] with input as invalid_cpu_utilization
+    violation[{"details": {"got": 50, "want": 70}, "msg": "The HorizontalPodAutoscaler valid-less has an invalid cpu utilization"}] with input as invalid_cpu_utilization
 }
 
 test_should_handle_missing_spec_or_metrics if {

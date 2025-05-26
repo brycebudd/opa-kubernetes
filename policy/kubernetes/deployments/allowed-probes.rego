@@ -8,10 +8,10 @@ default allow := false
 name := kubernetes.get_default(input.metadata, "name", "default")
 
 allow if {
-    count(violations) == 0
+    count(violation) == 0
 }
 
-violations contains {"msg": msg, "details": additionalDetails} if {
+violation contains {"msg": msg, "details": additionalDetails} if {
     kubernetes.is_deployment
     kubernetes.containers[container]
     not container.livenessProbe
@@ -19,7 +19,7 @@ violations contains {"msg": msg, "details": additionalDetails} if {
     additionalDetails := {}
 }
 
-violations contains {"msg": msg, "details": additionalDetails} if {
+violation contains {"msg": msg, "details": additionalDetails} if {
     kubernetes.is_deployment
     kubernetes.containers[container]
     not container.readinessProbe
@@ -27,10 +27,10 @@ violations contains {"msg": msg, "details": additionalDetails} if {
     additionalDetails := {}
 }
 
-violations contains {"msg": msg, "details": additionalDetails} if {
+warn contains {"msg": msg, "details": additionalDetails} if {
     kubernetes.is_deployment
     kubernetes.containers[container]
     not container.startupProbe
-    msg := sprintf("Warning: The container '%s' in deployment '%s' does not have a startup probe. Consider adding one to ensure smoother application startup and to prevent premature readiness signals.", [container.name, name])
+    msg := sprintf("The container '%s' in deployment '%s' does not have a startup probe. Consider adding one to ensure smoother application startup and to prevent premature readiness signals.", [container.name, name])
     additionalDetails := {}
 }

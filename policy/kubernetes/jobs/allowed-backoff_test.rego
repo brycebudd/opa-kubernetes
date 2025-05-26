@@ -2,7 +2,7 @@ package jobs.allowed_backoff_test
 
 import rego.v1
 import data.jobs.allowed_backoff.allow
-import data.jobs.allowed_backoff.violations
+import data.jobs.allowed_backoff.violation
 
 test_should_allow_job_with_backoff_limit if {
     valid_job := { 

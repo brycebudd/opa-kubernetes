@@ -1,4 +1,4 @@
-package autoscaling.allowed_replica_ranges
+package autoscaling
 
 import rego.v1
 import data.lib.kubernetes
@@ -9,10 +9,10 @@ default allow := false
 name := kubernetes.get_default(input.metadata, "name", "default")
 
 allow if {
-    count(violations) == 0
+    count(violation) == 0
 }
 
-violations contains {"msg": msg, "details": additionalDetails} if {
+violation contains {"msg": msg, "details": additionalDetails} if {
     kubernetes.is_hpa
     kubernetes.has_replicas
     input.spec.minReplicas > input.spec.maxReplicas
