@@ -1,4 +1,4 @@
-package autoscaling
+package autoscaling.allowed_maxreplicas
 
 import rego.v1
 import data.lib.kubernetes
@@ -14,13 +14,11 @@ allow if {
 violation contains {"msg": msg, "details": additionalDetails} if {
     kubernetes.is_hpa
     kubernetes.has_field(input, "spec")
-    kubernetes.has_field(input.spec, "metrics")
-    kubernetes.metrics.get_cpu_utilization_metrics[metric]
-    metric.target.averageUtilization != 70
-    msg := sprintf("The HorizontalPodAutoscaler %s has an invalid cpu utilization", [name])
+    kubernetes.has_field(input.spec, "maxReplicas")
+    input.spec.maxReplicas != 8
+    msg := sprintf("HorizontalPodAutoscaler %s has unexpected 'maxReplicas'", [name])
     additionalDetails := {
-        "got": metric.target.averageUtilization, 
-        "want": 70
+        "got": input.spec.maxReplicas,
+        "wanted": 8
     }
 }
-

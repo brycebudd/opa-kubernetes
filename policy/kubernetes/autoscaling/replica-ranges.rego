@@ -1,4 +1,4 @@
-package autoscaling
+package autoscaling.allowed_replica_ranges
 
 import rego.v1
 import data.lib.kubernetes

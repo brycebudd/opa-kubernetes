@@ -1,6 +1,8 @@
-package autoscaling
+package autoscaling.allowed_cpu_utilization_test
 
 import rego.v1
+import data.autoscaling.allowed_cpu_utilization.allow
+import data.autoscaling.allowed_cpu_utilization.violation
 
 test_should_allow_when_valid_cpu_utilization if {
     valid_cpu_utilization := {
