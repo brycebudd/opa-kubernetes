@@ -1,0 +1,6 @@
+rules:
+  all:
+    enabled: true
+ignore:
+  files:
+    - "*/*/lib/*"  # Optional: ignore helpers
